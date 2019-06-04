@@ -25,14 +25,18 @@ class TSL2561:
     def read_i2c_block_data(self, cmd_reg, bytes):
         return self.bus.read_i2c_block_data(self.bus_address, cmd_reg, bytes)
 
+    @staticmethod
+    def convert_data(data):
+        return data[0] + data[1] * 256
+
     def get_data(self):
         # Read data from sensor
         data1 = self.read_i2c_block_data(0x0C | 0x80, 2)
         data2 = self.read_i2c_block_data(0x0E | 0x80, 2)
 
         # Convert data
-        full = data1[1] * 256 + data1[0]
-        infrared = data2[1] * 256 + data2[0]
+        full = self.convert_data(data1)
+        infrared = self.convert_data(data2)
 
         return full, infrared
 
