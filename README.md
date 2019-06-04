@@ -30,6 +30,63 @@ By running  ` sudo i2cdetect -y 1` (it could be `0` for you) we can search for a
 70: -- -- -- -- -- -- -- --
 ```
 
+### Install InfluxDB
+
+This was written on 04.06.2019. For up-to-date install procedures please referee to the [official website](<https://www.influxdata.com/>).
+
+Add InfluxDB repository key
+
+```bash
+curl -sL https://repos.influxdata.com/influxdb.key | sudo apt-key add -
+```
+
+Load `VERSION_ID` variable
+
+```bash
+source /etc/os-release
+```
+
+Install the right version.
+
+```bash
+test $VERSION_ID = "7" && echo "deb https://repos.influxdata.com/debian wheezy stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+test $VERSION_ID = "8" && echo "deb https://repos.influxdata.com/debian jessie stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+test $VERSION_ID = "9" && echo "deb https://repos.influxdata.com/debian stretch stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+```
+
+Update local repositories and install InfluxDB
+
+```bash
+sudo apt update
+sudo apt install influxdb -y
+```
+
+Start InfluxDB
+
+```bash
+sudo systemctl unmask influxdb.service
+sudo systemctl start influxdb
+```
+
+To check if everything works enter `influx` into the CLI. You should see something similar to this:
+
+```
+Connected to http://localhost:8086 version 1.7.6
+InfluxDB shell version: 1.7.6
+Enter an InfluxQL query
+> 
+```
+
+With `exit` you can stop the program.
+
+### Install InfluxDB python library
+
+Install with command:
+
+```bash
+sudo apt install python3-infuxdb
+```
+
 
 
 ## Quellen
@@ -38,3 +95,5 @@ By running  ` sudo i2cdetect -y 1` (it could be `0` for you) we can search for a
 * [Read TSL2561 with python](<https://github.com/ControlEverythingCommunity/TSL2561/blob/master/Python/TSL2561.py>)
 * [Python Shebang line](https://stackoverflow.com/a/19305076)
 * [Check Sensor is present](<https://www.raspberrypi.org/forums/viewtopic.php?t=114401#p782496>)
+* [InfluxDB RPi](<https://gist.github.com/boseji/bb71910d43283a1b84ab200bcce43c26>)
+* [InfluxDB Python](<https://github.com/influxdata/influxdb-python>)
