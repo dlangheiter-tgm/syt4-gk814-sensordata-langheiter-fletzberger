@@ -87,7 +87,64 @@ Install with command:
 sudo apt install python3-infuxdb
 ```
 
+### Running the programms
 
+All programs are written in Python3. They are all capable to be run by bash directly.
+
+#### Programs:
+
+##### basicRead.py
+
+Is the program directly taken from controleverything
+
+##### read.py
+
+Is a class to be used to read data from the sensor
+
+##### basic_influx.py
+
+Is a testing file to test the connection to InfluxDB
+
+##### continuous_read.py
+
+Is the first implementation of using `read.py` and Influx. It reads the sensor every second and stores it into the InfluxDB.
+
+The wait time between read/writes can be changed by supplying an argument which specifies the save interval in seconds.
+
+```bash
+./continuous_read.py 0.1 # Reads the sensor every 0.1 Seconds
+```
+
+###  Install Grafana
+
+Check the [official grafana website](<https://grafana.com/grafana/download?platform=arm>) for updated install specifics.
+
+```bash
+wget https://dl.grafana.com/oss/release/grafana-rpi_6.2.1_armhf.deb 
+sudo dpkg -i grafana-rpi_6.2.1_armhf.deb
+```
+
+The last step failed. I fixed it by using:
+
+```bash
+sudo apt upgrade
+sudo apt --fix-broken install
+```
+
+Enable Grafana service and start it
+
+```bash
+sudo systemctl enable grafana-server.service
+sudo service grafana-server start
+```
+
+After this you should be able to access grafana by accessing the IP of the Pi with the port `3000`. The default credentials are `admin` : `admin`.
+
+After that I added a data source. As we install InfluxDB I choose InfluxDB as type. I left everything as default expect `database`. There I entered `sensor_data` as per the program.
+
+After that I hit `Save & Test`. If you see the error message `database not found: sensor_data` just start the `continuous_read.py` and at least wait until you see the message `Initializing sensor...`. Then try again.
+
+Then you can create your first Visualization (the small bar graph on the top right). Then select Graph. Then go to queries (on the left the 4 Symbols the top one). Remove all `group by` statements by clicking on `time` and then remove. Click on `select measurement` and select `light_sensor`. Click under `field(value)` on `value` and select `full_flux`. Then press the `+` just to the right. Select under `Fields` `field`. In the new line change `full_flux` to `ir_flux`. Then hit the right arrow in the top left corner to go back to the dashboard. There you should se you visualization.
 
 ## Quellen
 
@@ -97,3 +154,5 @@ sudo apt install python3-infuxdb
 * [Check Sensor is present](<https://www.raspberrypi.org/forums/viewtopic.php?t=114401#p782496>)
 * [InfluxDB RPi](<https://gist.github.com/boseji/bb71910d43283a1b84ab200bcce43c26>)
 * [InfluxDB Python](<https://github.com/influxdata/influxdb-python>)
+* [Grafana](https://grafana.com/)
+
