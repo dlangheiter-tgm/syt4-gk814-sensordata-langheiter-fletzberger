@@ -37,3 +37,4 @@ By running  ` sudo i2cdetect -y 1` (it could be `0` for you) we can search for a
 * [Adafruit RPI I2C](<https://learn.adafruit.com/adafruit-16-channel-servo-driver-with-raspberry-pi/configuring-your-pi-for-i2c>)
 * [Read TSL2561 with python](<https://github.com/ControlEverythingCommunity/TSL2561/blob/master/Python/TSL2561.py>)
 * [Python Shebang line](https://stackoverflow.com/a/19305076)
+* [Check Sensor is present](<https://www.raspberrypi.org/forums/viewtopic.php?t=114401#p782496>)

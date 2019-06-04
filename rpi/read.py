@@ -9,6 +9,11 @@ class TSL2561:
     def __init__(self, integration_time=2, debounce_time=0.5):
         self.bus = smbus.SMBus(1)
 
+        try:
+            self.bus.read_byte(self.bus_address)
+        except:
+            raise Exception('Sensor was not found on I²C bus')
+
         # Power ON Mode
         self.write_byte_data(0x00 | 0x80, 0x03)
 
